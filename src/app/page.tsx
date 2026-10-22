@@ -48,9 +48,9 @@ export default function BreakoutGame() {
   // 사용자 정보 및 학적 정보 (제작자 정보)
   const [playerName, setPlayerName] = useState("");
   const studentInfo = {
-    dept: "컴퓨터공학부",
-    id: "202401234",
-    name: "홍길동",
+    dept: "경제학과",
+    id: "202400678",
+    name: "박수철",
   };
 
   // 게임 변수
