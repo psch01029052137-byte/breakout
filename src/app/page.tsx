@@ -56,6 +56,7 @@ export default function BreakoutGame() {
   // 게임 변수
   const [lives, setLives] = useState(3);
   const [redClearedCount, setRedClearedCount] = useState(0); // 연한 빨강 3개 제거 시 승리
+  const [showThumbsUp, setShowThumbsUp] = useState(false); // 빨간 블록 맞출 때 엄지척 애니메이션 표시
   const [countdown, setCountdown] = useState(3);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [finalTimeStr, setFinalTimeStr] = useState("00:00");
@@ -488,6 +489,12 @@ export default function BreakoutGame() {
               localRedCleared += 1;
               setRedClearedCount(localRedCleared);
 
+              // 빨간 블록 타격 시 엄지척 팝업 효과 (1.2초간 표시)
+              setShowThumbsUp(true);
+              setTimeout(() => {
+                setShowThumbsUp(false);
+              }, 1200);
+
               // 연한 빨강 3개 제거 시 승리 미션 완료!
               if (localRedCleared >= 3) {
                 handleGameClear(elapsedSeconds);
@@ -625,31 +632,10 @@ export default function BreakoutGame() {
           <h2 className="text-2xl font-extrabold text-white mb-1 flex items-center gap-2">
             <span>횃불이와 함께하는 벽돌깨기</span>
           </h2>
-          <p className="text-xs text-amber-300/90 mb-4 flex items-center justify-center gap-1 font-medium">
+          <p className="text-xs text-amber-300/90 mb-5 flex items-center justify-center gap-1 font-medium">
             <Sparkles className="w-3.5 h-3.5" />
             연한 빨강 블록을 3개 깨뜨리면 미션 클리어!
           </p>
-
-          {/* 제작자 학적 정보 (학과, 학번, 이름) */}
-          <div className="w-full bg-slate-950/70 border border-slate-800/80 rounded-xl p-3 mb-5 text-left text-xs text-slate-300">
-            <div className="text-[11px] font-semibold text-amber-400 mb-1 flex items-center gap-1">
-              <span>제작자 정보</span>
-            </div>
-            <div className="grid grid-cols-3 gap-1">
-              <div>
-                <span className="text-slate-500 block">학과</span>
-                <span className="font-medium text-slate-200">{studentInfo.dept}</span>
-              </div>
-              <div>
-                <span className="text-slate-500 block">학번</span>
-                <span className="font-medium text-slate-200">{studentInfo.id}</span>
-              </div>
-              <div>
-                <span className="text-slate-500 block">이름</span>
-                <span className="font-medium text-slate-200">{studentInfo.name}</span>
-              </div>
-            </div>
-          </div>
 
           {/* 플레이어 이름 입력 */}
           <div className="w-full mb-5">
@@ -796,6 +782,22 @@ export default function BreakoutGame() {
               </button>
             </div>
           </div>
+
+          {/* 연한 빨강 블록 타격 시 엄지척 팝업 효과 */}
+          {showThumbsUp && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-30 animate-in zoom-in-75 fade-in duration-200">
+              <div className="bg-slate-900/90 border-2 border-amber-400 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 backdrop-blur-md animate-bounce">
+                <span className="text-4xl">👍</span>
+                <div>
+                  <div className="text-amber-300 font-extrabold text-lg flex items-center gap-1">
+                    <span>나이스 샷!</span>
+                    <Sparkles className="w-4 h-4 text-amber-400" />
+                  </div>
+                  <div className="text-xs text-rose-300 font-semibold">빨간 블록 명중!</div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* 캔버스 게임 화면 영역 */}
           <div className="relative w-full max-w-[750px] aspect-[750/500] bg-slate-900/90 rounded-2xl border-2 border-slate-800 overflow-hidden shadow-2xl flex items-center justify-center">
